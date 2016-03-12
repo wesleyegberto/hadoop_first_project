@@ -1,0 +1,82 @@
+
+# Instalar Java 7
+
+
+# Instalar servidor SSH
+
+sudo apt-get install openssh-server
+
+
+
+
+# Criar usuário
+
+sudo addgroup Hadoop
+
+sudo adduser -ingroup Hadoop hduser
+
+
+# Logar com o hduser, então:
+
+ssh-keygen -t rsa -P ""
+
+cat $HOME/.ssh/id_rsa.pub >> $HOME/.ssh/authorized_keys
+
+ssh hduser@localhost
+
+
+
+
+
+mkdir -p yarn_data/hdfs/namenode
+mkdir -p yarn_data/hdfs/namenode
+mkdir -p yarn_data/hdfs/datanode
+
+
+
+# Dar acesso
+
+sudo chown -R hduser:Hadoop hadoop-2.7.0
+
+
+
+# Formatar HDFS
+
+hadoop namenode -format
+
+
+
+
+# Iniciar
+
+hadoop-daemon.sh start namenode
+hadoop-daemon.sh start datanode
+yarn-daemon.sh start nodemanager
+mr-jobhistory-daemon.sh start historyserver
+
+
+
+
+# Criar pastas
+
+bin/hadoop dfs -mkdir /input
+bin/hadoop dfs -mkdir /output
+bin/hadoop dfs -copyFromLocal <local-dir> <hdfs-dir>
+
+
+
+
+# Navegar o HDFS
+
+http://127.0.0.1:50070/explorer.html
+
+
+
+
+# Parar
+stop-dfs.sh
+stop-yarn.sh
+
+
+
+
